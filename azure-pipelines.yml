@@ -62,9 +62,18 @@ stages:
       displayName: 'Publish the project - $(buildConfiguration)'
       inputs:
         command: 'publish'
-        projects: '**/*.csproj'
+        projects: '**/Tailspin.SpaceGame.Web.csproj'
         publishWebProjects: false
         arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+        zipAfterPublish: false
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish the Web Job'
+      inputs:
+        command: 'publish'
+        projects: '**/SampleWebJob.csproj'
+        publishWebProjects: false
+        arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)/app_data/jobs/triggered/'
         zipAfterPublish: false
 
     - publish: '$(Build.ArtifactStagingDirectory)'
