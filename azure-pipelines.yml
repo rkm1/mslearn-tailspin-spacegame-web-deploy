@@ -65,7 +65,7 @@ stages:
         projects: '**/*.csproj'
         publishWebProjects: false
         arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
-        zipAfterPublish: true
+        zipAfterPublish: false
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
@@ -91,4 +91,4 @@ stages:
             inputs:
               azureSubscription: 'Azure rkm1'
               appName: '$(WebAppName)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)'
