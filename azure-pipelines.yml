@@ -1,5 +1,6 @@
 variables:
   buildConfiguration: 'Release'
+  solutionName: 'Tailspin.SpaceGame.Web'
 
 stages:
 - stage: 'Build'
@@ -13,7 +14,7 @@ stages:
         - npm
 
     variables:
-      wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
+      wwwrootDir: '$(solutionName)/wwwroot'
       dotnetSdkVersion2: '2.1.505'
       dotnetSdkVersion: '3.x'
 
@@ -62,7 +63,7 @@ stages:
       displayName: 'Publish the project - $(buildConfiguration)'
       inputs:
         command: 'publish'
-        projects: '**/Tailspin.SpaceGame.Web.csproj'
+        projects: '**/$(solutionName).csproj'
         publishWebProjects: false
         arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
         zipAfterPublish: false
@@ -73,7 +74,7 @@ stages:
         command: 'publish'
         projects: '**/SampleWebJob.csproj'
         publishWebProjects: false
-        arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)/app_data/jobs/triggered/'
+        arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)/$(solutionName)/app_data/jobs/triggered/'
         zipAfterPublish: false
 
     - publish: '$(Build.ArtifactStagingDirectory)'
@@ -100,4 +101,4 @@ stages:
             inputs:
               azureSubscription: 'Azure rkm1'
               appName: '$(WebAppName)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/$(solutionName)'
